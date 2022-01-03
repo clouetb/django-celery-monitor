@@ -43,8 +43,8 @@ def colored_state(task):
     See ``django_celery_monitor.admin.TASK_STATE_COLORS`` for the colors.
     """
     state = escape(task.state)
-    color = TASK_STATE_COLORS.get(task.state, "black")
-    return "{0} <b>{1}</b>".format(color, state)
+    color = TASK_STATE_COLORS.get(task.state, "⚫")
+    return "{0} {1}".format(color, state)
 
 
 @display_field(_("state"), "last_heartbeat")
@@ -55,14 +55,14 @@ def node_state(node):
     """
     state = node.is_alive() and "ONLINE" or "OFFLINE"
     color = NODE_STATE_COLORS[state]
-    return "{0} <b>{1}</b>".format(color, state)
+    return "{0} {1}".format(color, state)
 
 
 @display_field(_("ETA"), "eta")
 def eta(task):
     """Return the task ETA as a grey "none" if none is provided."""
     if not task.eta:
-        return '<span style="color: gray;">none</span>'
+        return "⚪"
     return escape(make_aware(task.eta))
 
 
