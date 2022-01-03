@@ -25,7 +25,7 @@ TASK_STATE_COLORS = {
     states.RETRY: "orange",
     "RECEIVED": "blue",
 }
-NODE_STATE_COLORS = {"ONLINE": "green", "OFFLINE": "gray"}
+NODE_STATE_COLORS = {"ONLINE": "🟢", "OFFLINE": "⚪"}
 
 
 class MonitorList(main_views.ChangeList):
@@ -44,7 +44,7 @@ def colored_state(task):
     """
     state = escape(task.state)
     color = TASK_STATE_COLORS.get(task.state, "black")
-    return '<b><span style="color: {0};">{1}</span></b>'.format(color, state)
+    return "{0} <b>{1}</b>".format(color, state)
 
 
 @display_field(_("state"), "last_heartbeat")
