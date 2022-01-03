@@ -18,12 +18,12 @@ from .models import TaskState, WorkerState
 from .utils import action, display_field, fixedwidth, make_aware
 
 TASK_STATE_COLORS = {
-    states.SUCCESS: "green",
-    states.FAILURE: "red",
-    states.REVOKED: "magenta",
-    states.STARTED: "yellow",
-    states.RETRY: "orange",
-    "RECEIVED": "blue",
+    states.SUCCESS: "🟢",
+    states.FAILURE: "🔴",
+    states.REVOKED: "⛔",
+    states.STARTED: "▶️",
+    states.RETRY: "🔁",
+    "RECEIVED": "🔵",
 }
 NODE_STATE_COLORS = {"ONLINE": "🟢", "OFFLINE": "⚪"}
 
@@ -55,7 +55,7 @@ def node_state(node):
     """
     state = node.is_alive() and "ONLINE" or "OFFLINE"
     color = NODE_STATE_COLORS[state]
-    return '<b><span style="color: {0};">{1}</span></b>'.format(color, state)
+    return "{0} <b>{1}</b>".format(color, state)
 
 
 @display_field(_("ETA"), "eta")
