@@ -9,7 +9,8 @@ from pprint import pformat
 from django.conf import settings
 from django.db.models import DateTimeField, Func
 from django.utils import timezone
-from django.utils.html import escape
+from django.utils.html import escape, mark_safe, format_html
+
 
 try:
     from django.db.models.functions import Now
@@ -65,8 +66,8 @@ def fromtimestamp(value):
 
 
 FIXEDWIDTH_STYLE = """\
-<span title="{0}" style="font-size: {1}pt; \
-font-family: Menlo, Courier; ">{2}</span> \
+<span title="{}" style="font-size: {}pt; \
+font-family: Menlo, Courier; ">{}</span> \
 """
 
 
@@ -105,15 +106,13 @@ def fixedwidth(field, name=None, pt=6, width=16, maxlen=64, pretty=False):
         if val.startswith("u'") or val.startswith('u"'):
             val = val[2:-1]
         shortval = val.replace(",", ",\n")
-        shortval = shortval.replace("\n", "|br/|")
 
         if len(shortval) > maxlen:
             shortval = shortval[:maxlen] + "..."
-        styled = FIXEDWIDTH_STYLE.format(
-            escape(val[:255]),
+        return format_html(FIXEDWIDTH_STYLE,
+            val[:255],
             pt,
-            escape(shortval),
+            shortval,
         )
-        return styled.replace("|br/|", "<br/>")
 
     return f
