@@ -10,7 +10,7 @@ from django.contrib.admin.views import main as main_views
 from django.shortcuts import render
 from django.template import RequestContext
 from django.utils.encoding import force_str
-from django.utils.html import escape
+from django.utils.html import escape, mark_safe, format_html
 from django.utils.translation import gettext_lazy as _
 
 from .humanize import naturaldate
@@ -44,7 +44,7 @@ def colored_state(task):
     """
     state = escape(task.state)
     color = TASK_STATE_COLORS.get(task.state, "⚫")
-    return "{0} {1}".format(color, state)
+    return mark_safe("{0} {1}".format(color, state))
 
 
 @display_field(_("state"), "last_heartbeat")
@@ -55,7 +55,7 @@ def node_state(node):
     """
     state = node.is_alive() and "ONLINE" or "OFFLINE"
     color = NODE_STATE_COLORS[state]
-    return "{0} {1}".format(color, state)
+    return mark_safe("{0} {1}".format(color, state))
 
 
 @display_field(_("ETA"), "eta")
@@ -63,7 +63,7 @@ def eta(task):
     """Return the task ETA as a grey "none" if none is provided."""
     if not task.eta:
         return "⚪"
-    return escape(make_aware(task.eta))
+    return mark_safe(make_aware(task.eta))
 
 
 @display_field(_("when"), "tstamp")
@@ -74,9 +74,9 @@ def tstamp(task):
     it as a "natural date" -- a human readable version.
     """
     value = make_aware(task.tstamp)
-    return '<div title="{0}">{1}</div>'.format(
-        escape(str(value)),
-        escape(naturaldate(value)),
+    return format_html('<div title="{}">{}</div>',
+        mark_safe(str(value)),
+        mark_safe(naturaldate(value))
     )
 
 
@@ -84,9 +84,9 @@ def tstamp(task):
 def name(task):
     """Return the task name and abbreviates it to maximum of 16 characters."""
     short_name = abbrtask(task.name, 16)
-    return '<div title="{0}"><b>{1}</b></div>'.format(
-        escape(task.name),
-        escape(short_name),
+    return format_html('<div title="{0}"><b>{1}</b></div>',
+        mark_safe(task.name),
+        mark_safe(short_name),
     )
 
 
