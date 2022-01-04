@@ -18,14 +18,14 @@ from .models import TaskState, WorkerState
 from .utils import action, display_field, fixedwidth, make_aware
 
 TASK_STATE_COLORS = {
-    states.SUCCESS: "🟢",
+    states.SUCCESS: "✔️",
     states.FAILURE: "🔴",
     states.REVOKED: "⛔",
     states.STARTED: "▶️",
     states.RETRY: "🔁",
     "RECEIVED": "🔵",
 }
-NODE_STATE_COLORS = {"ONLINE": "🟢", "OFFLINE": "⚪"}
+NODE_STATE_COLORS = {"ONLINE": "⚡", "OFFLINE": "⚪"}
 
 
 class MonitorList(main_views.ChangeList):
