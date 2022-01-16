@@ -51,6 +51,12 @@ class WorkerState(models.Model):
         return False
 
     @property
+    def name_and_status(self):
+        return (
+            f"{self.hostname.replace('celery@', '')} {'⚡' if self.is_alive() else '⚪'}"
+        )
+
+    @property
     def heartbeat_timestamp(self):
         return mktime(self.last_heartbeat.timetuple())
 
